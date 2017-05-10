@@ -1,0 +1,134 @@
+#Question1
+#============================================================
+import numpy
+from matplotlib import pyplot as plt
+
+def g(array,shift):
+ s = [shift]
+ f1=numpy.fft.fft(array)
+ f2=numpy.fft.fft(s)
+ conv=numpy.real(numpy.fft.ifft(f1*f2))
+ return conv
+
+array = [1,2,3,4,5,6,7]
+shift = 4
+
+b=g(array,shift)
+print "The original array is "+repr(array)
+print "The shifted array is "+repr(b)
+
+#finding the centre of the array
+CentreSlot = len(array)/2
+x0 = array[CentreSlot]
+
+amplitude = 1
+x = numpy.linspace(-10,10,100)
+sigma = 1
+
+#The following gaussian starts at the centre of the array, then it is shifted by half the array length. I am having an issue when the array length is an even number: In such a case, my value of x0 would not be correct.
+y=amplitude*numpy.exp(-((x-(x0 + CentreSlot ))**2)/(2*sigma**2))
+
+plt.plot(x,y)
+plt.show()
+
+#==================================================================
+#Question2
+#==================================================================
+
+import numpy
+from matplotlib import pyplot as plt
+
+def f(array1,array2):
+ 
+ f1=numpy.fft.fft(array1)
+ f2=numpy.conj( numpy.fft.fft(array2) )
+ correlation=numpy.real(numpy.fft.fft(f1*f2))
+ return correlation
+
+array1 = [1,1,1,1,1,1,1]
+array2 = [1,1,1,1,1,1,1]
+
+a = f(array1,array2)
+print "Array1 is given by "+repr(array1)
+print "Array2 is given by "+repr(array2)
+print ""
+print "Their correlation is given by "+repr(a)
+
+#Getting a Gaussian ready
+x0 = 0
+amplitude = 1
+x = numpy.linspace(-10,10,100)
+sigma = 1
+y=amplitude*numpy.exp(-((x-x0)**2)/(2*sigma**2))
+
+#Taking the correlation of the gaussian
+j=f(y,x)
+
+#Plotting the correlation with the original gaussian
+plt.plot(x,y)
+plt.plot(x,j)
+plt.show()
+
+#==================================================================
+#Question3
+#==================================================================
+
+import numpy
+from matplotlib import pyplot as plt
+
+def correlationf(input1,input2):
+ 
+ f1=numpy.fft.fft(input1)
+ f2=numpy.conj( numpy.fft.fft(input2) )
+ correlation=numpy.real(numpy.fft.fft(f1*f2))
+ return correlation
+
+def convf(array,shift):
+
+ s = [shift]  
+
+ f1=numpy.fft.fft(array)
+ f2=numpy.fft.fft(s)
+ conv=numpy.real(numpy.fft.ifft(f1*f2))
+ return conv
+
+#Getting a Gaussian ready
+x0 = 0
+amplitude = 1
+x = numpy.linspace(-10,10,100)
+sigma = 1
+y=amplitude*numpy.exp(-((x-x0)**2)/(2*sigma**2))
+
+#Shifting the Gaussian by an arbitraty amount using the code in Q1
+shift = 5
+convo=convf(y,shift)
+
+#Taking the correlation of the gaussian using the code in Q2
+corr=correlationf(convo,convo)
+
+#==================================================================
+#Question4
+#==================================================================
+
+import numpy
+from matplotlib import pyplot as plt
+
+def g(array1,array2):
+
+ f1=numpy.fft.fft(array1)
+ f2=numpy.fft.fft(array2)
+ conv=numpy.real(numpy.fft.ifft(f1*f2))
+ return conv
+
+array1 = [0,1,1,1,1,1,1,1,0]
+array2 = [0,2,2,2,2,2,2,2,0]
+
+b=g(array1,array2)
+print "The original arrays are :"
+print array1
+print array2
+print ""
+print "The convolution of the two arrays is given by :"
+print b
+
+
